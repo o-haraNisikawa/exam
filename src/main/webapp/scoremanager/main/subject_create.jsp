@@ -11,24 +11,14 @@
 
 	<c:param name="content">
 		<section class="me-4">
-			<h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2 px-4">学生情報登録</h2>
-			<form method="get" action="StudentCreateExecute.action">
-				<div class="">
-					<label class="form-lavel" for="student-f1-select">入学年度</label>
-					<select class="form-select" id="student-f1-select" name="ent_year">
-						<option value="0">--------</option>
-						<c:forEach var="year" items="${ent_year_set}">
-							<option value="${year}" <c:if test="${year==ent_year}">selected</c:if>>${year}</option>
-						</c:forEach>
-					</select>
-							<p class="mt2 text-warning">${errors.get("f1")}</p>
-					</div>
+			<h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2 px-4">科目情報登録</h2>
+			<form method="get" action="SubjectCreateExecute.action">
 				<div class="mb-3">
-						<label for="input1" class="form-label">学生番号</label>
+						<label for="input1" class="form-label">科目コード</label>
 						<input class="form-control" name="no" type="text" id="input1"
-						placeholder="学生番号を入力してください" value="${no}"
+						placeholder="科目コードを入力してください" value="${no}"
 						maxlength="10" required />
-						<p class="mt2 text-warning">${errors.get("f2")}</p>
+						<p class="mt2 text-warning">${errors.get("f1")}</p>
 				</div>
 				<div class="mb-3">
 						<label class="form-label" for="input2">氏名</label>
