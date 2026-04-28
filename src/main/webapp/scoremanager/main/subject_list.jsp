@@ -21,7 +21,7 @@
 						<label class="form-lavel" for="student-f1-select">入学年度</label>
 						<select class="form-select" id="student-f1-select" name="f1">
 							<option value="0">--------</option>
-							<c:forEach var="year" items="${ent_year_set }">
+							<c:forEach var="subjectcode" items="${ent_year_set }">
 								<%-- 現在のyearと選択されていたf1が一致した場合selectedを追記 --%>
 								<option value="${year}" <c:if test="${year == f1}"> selected </c:if>>${year}</option>
 							</c:forEach>
@@ -36,15 +36,6 @@
 								<option value="${num}" <c:if test="${num == f2}">selected</c:if>>${num}</option>
 							</c:forEach>
 						</select>
-					</div>
-					<div class="col-2 form-check text-center">
-						<label class="form-check-label" for="student-f3-check">在学中
-							<%-- パラメーターf3が存在している場合はcheckedを追記 --%>
-							<input class="form-check-input" type="checkbox"
-							id="student-f3-check" name="f3" value="true"
-							<c:if test="${!empty f3 }">checked</c:if>
-							>
-						</label>
 					</div>
 					<div class="col-2 text-center">
 						<button class="btn btn-secondary" id="filter-button">絞り込み</button>
