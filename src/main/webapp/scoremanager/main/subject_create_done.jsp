@@ -16,8 +16,8 @@
 				<p class="bg-success px-4 text-center bg-opacity-50 mb-5">登録が完了しました</p>
 			</label>
 			<div class="row">
-				<a href="StudentCreate.action" class="col-2">戻る</a>
-				<a href="StudentList.action" class="col-2">学生一覧</a>
+				<a href="SubjectCreate.action" class="col-2">戻る</a>
+				<a href="SubjectList.action" class="col-2">科目一覧</a>
 			</div>
 		</section>
 	</c:param>
