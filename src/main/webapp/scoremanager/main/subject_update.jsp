@@ -15,32 +15,16 @@
 			<form method="get" action="StudentUpdateExecute.action">
 			<div class="mx-3 my-4">
 				<div class="mb-3">
-					<label class="form-text-lavel" for="entYear">入学年度</label>
-					<input class="form-control-plaintext" type="text" name="ent_year" id="entYear"
-						value="${student.getEntYear()}" readonly />
-				</div>
-				<div class="mb-3">
-					<label class="form-text-lavel" for="studentNo">学生番号</label>
-					<input class="form-control-plaintext ml-3" type="text" name="no" id="studentNo"
-						value="${student.getNo()}" readonly />
-				</div>
-				<div class="mb-3">
-					<label class="form-text-label" for="studentName">氏名</label>
+					<label class="form-text-label" for="studentName">科目名</label>
 					<input class="form-control" name="name" type="text" id="studentName"
 						placeholder="氏名を入力してください" value="${student.getName()}"
 						maxlength="30" required />
 				</div>
 				<div class="mb-3">
-					<label class="form-text-label" >クラス</label>
-					<select class="form-select" name="class_num">
-						<c:forEach var="num" items="${class_num_set}">
-							<option value="${num}" <c:if test="${num == student.getClassNum()}">selected</c:if>>${num}</option>
-						</c:forEach>
-					</select>
-				</div>
-				<div class="mb-3">
-					<label class="form-check-label" for="check">在学中</label>
-					<input class="form-check-input" id="check" type="checkbox" name="is_attend" value="true" <c:if test="${student.isAttend()}">checked</c:if>>
+					<label class="form-text-label" for="studentName">科目番号</label>
+					<input class="form-control" name="name" type="text" id="studentName"
+						placeholder="氏名を入力してください" value="${student.getName()}"
+						maxlength="30" required />
 				</div>
 				<div class="mb-3 container">
 					<div class="row">
