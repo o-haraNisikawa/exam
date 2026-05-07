@@ -15,15 +15,15 @@
 			<form method="get" action="StudentUpdateExecute.action">
 			<div class="mx-3 my-4">
 				<div class="mb-3">
-					<label class="form-text-label" for="studentName">科目名</label>
-					<input class="form-control" name="name" type="text" id="studentName"
-						placeholder="氏名を入力してください" value="${student.getName()}"
+					<label class="form-text-label" for="subjectName">科目名</label>
+					<input class="form-control" name="name" type="text" id="subjectName"
+						placeholder="氏名を入力してください" value="${subject.getName()}"
 						maxlength="30" required />
 				</div>
 				<div class="mb-3">
-					<label class="form-text-label" for="studentName">科目番号</label>
-					<input class="form-control" name="name" type="text" id="studentName"
-						placeholder="氏名を入力してください" value="${student.getName()}"
+					<label class="form-text-label" for="subjectCd">科目番号</label>
+					<input class="form-control" name="cd" type="text" id="subjectCd"
+						placeholder="氏名を入力してください" value="${subject.getCd()}"
 						maxlength="30" required />
 				</div>
 				<div class="mb-3 container">
@@ -37,7 +37,7 @@
 					</div>
 					</div>
 				</div>
-				<div><a href="StudentList.action">戻る</a></div>
+				<div><a href="SubjectList.action">戻る</a></div>
 			</div>
 			</form>
 		</section>
