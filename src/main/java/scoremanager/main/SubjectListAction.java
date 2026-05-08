@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import tool.Action;
 
-public class StudentListAction extends Action {
+public class SubjectListAction extends Action {
 
 	@Override
 	public void execute(HttpServletRequest req, HttpServletResponse res)
