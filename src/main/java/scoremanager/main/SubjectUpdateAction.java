@@ -32,6 +32,7 @@ public class SubjectUpdateAction extends Action {
             res.sendRedirect("login.jsp");
             return;
         }
+        
 
         // 教師が所属する学校を取得
         School school = teacher.getSchool();
