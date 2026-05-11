@@ -1,15 +1,13 @@
 package scoremanager.main;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import bean.Student;
+import bean.Subject;
 import bean.Teacher;
-import dao.ClassNumDao;
-import dao.StudentDao;
+import dao.SubjectDao;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -20,77 +18,122 @@ public class SubjectListAction extends Action {
 	@Override
 	public void execute(HttpServletRequest req, HttpServletResponse res)
 			throws Exception {
-		HttpSession session = req.getSession();
-		Teacher teacher = (Teacher)session.getAttribute("user");
 
-		String entYearStr = "";
-		String classNum = "";
-		String isAttendStr = "";
-		int entYear = 0;
-		boolean isAttend = false;
-		List<Student> students = null;
-		LocalDate todaysDate = LocalDate.now();
-		int year = todaysDate.getYear();
-		StudentDao sDao = new StudentDao();
-		ClassNumDao cNumDao = new ClassNumDao();
+		// セッション取得
+		HttpSession session = req.getSession();
+
+		// ログインユーザー取得
+		Teacher teacher = (Teacher) session.getAttribute("user");
+
+		// DAO
+		SubjectDao sDao = new SubjectDao();
+
+		// エラー
 		Map<String, String> errors = new HashMap<>();
 
-		//リクエストパラメーターの取得
-		entYearStr  =req.getParameter("f1");
-		classNum = req.getParameter("f2");
-		isAttendStr = req.getParameter("f3");
-		isAttend = Boolean.parseBoolean(isAttendStr);
-		// ビジネスロック
-		if (entYearStr != null){
-			entYear = Integer.parseInt(entYearStr);
+		// パラメータ
+		String cd = "";
+		String name = "";
+
+		// 科目一覧
+		List<Subject> subjects = new ArrayList<>();
+
+		// select用
+		List<String> subjectCdSet = new ArrayList<>();
+		List<String> subjectNameSet = new ArrayList<>();
+
+		// ------------------------
+		// パラメータ取得
+		// ------------------------
+
+		cd = req.getParameter("f1");
+		name = req.getParameter("f2");
+
+		// ------------------------
+		// 全件取得
+		// ------------------------
+
+		List<Subject> allSubjects =
+				sDao.filter(teacher.getSchool(), true);
+
+		// ------------------------
+		// selectボックス生成
+		// ------------------------
+
+		for (Subject s : allSubjects) {
+
+			subjectCdSet.add(s.getCd());
+
+			subjectNameSet.add(s.getName());
 		}
 
-		//DBからデータ取得
-		//ログインユーザーの学校コードをもとにクラス番号の一覧を取得
-		List<String> list = cNumDao.filter(teacher.getSchool());
+		// ------------------------
+		// 検索処理
+		// ------------------------
 
-		if (entYear != 0 && !classNum.equals("0")){
-			// 入学年度とクラス番号を指定
-			students = sDao.filter(teacher.getSchool(),entYear,classNum,isAttend);
-		} else if (entYear != 0 && classNum.equals("0")){
-			// 入学年度のみ指定
-			students = sDao.filter(teacher.getSchool(),entYear,isAttend);
-		} else if (entYear == 0 && classNum == null || entYear == 0 && classNum.equals("0")){
-			// 指定なしの場合
-			// 全ユーザーのデータを取得
-			students = sDao.filter(teacher.getSchool(),isAttend);
-		} else {
-			errors.put("f1", "クラスを指定する場合は入学年度も指定してください。");
-			req.setAttribute("errors", errors);
-			// 全学生情報を取得
-			students = sDao.filter(teacher.getSchool(),isAttend);
+		// 科目コード指定
+		if (cd != null && !cd.equals("") && !cd.equals("0")) {
+
+			Subject subject =
+					sDao.get(cd, teacher.getSchool());
+
+			if (subject != null) {
+
+				// 科目名も一致する場合
+				if (name == null
+						|| name.equals("0")
+						|| subject.getName().equals(name)) {
+
+					subjects.add(subject);
+				}
+
+			}
+
+		}
+		// 科目名のみ
+		else if (name != null
+				&& !name.equals("")
+				&& !name.equals("0")) {
+
+			for (Subject s : allSubjects) {
+
+				if (s.getName().equals(name)) {
+
+					subjects.add(s);
+				}
+			}
+
+		}
+		// 指定なし
+		else {
+
+			subjects = allSubjects;
 		}
 
-		//リストを初期化
-		List<Integer> entYearSet = new ArrayList<>();
-		// 10年前から1年後までをリストに追加
-		for (int i = year - 10; i < year + 1; i++){
-			entYearSet.add(i);
+		// エラー
+		if (subjects.size() == 0) {
+
+			errors.put("f1", "科目情報が存在しませんでした。");
 		}
 
-		// レスポンス値をセット
-		// リクエストに入学年度をセット
-		req.setAttribute("f1", entYear);
-		// リクエストにクラス番号をセット
-		req.setAttribute("f2", classNum);
-		//在学フラグが送信されていた場合
-		if (isAttendStr != null){
-			// 在学フラグを立てる
-			isAttend = true;
-			// リクエストに在学フラグをセット
-			req.setAttribute("f3", isAttend);
-		}
-		// リクエストに学生リストをセット
-		req.setAttribute("students", students);
-		// リクエストにデータをセット
-		req.setAttribute("class_num_set", list);
-		req.setAttribute("ent_year_set", entYearSet);
+		// ------------------------
+		// JSPへ値セット
+		// ------------------------
 
-		req.getRequestDispatcher("student_list.jsp").forward(req, res);
+		req.setAttribute("f1", cd);
+
+		req.setAttribute("f2", name);
+
+		req.setAttribute("subjects", subjects);
+
+		req.setAttribute("subject_cd_set", subjectCdSet);
+
+		req.setAttribute("subject_name_set", subjectNameSet);
+
+		req.setAttribute("errors", errors);
+
+		// フォワード
+		req.getRequestDispatcher("subject_list.jsp")
+				.forward(req, res);
 	}
 }

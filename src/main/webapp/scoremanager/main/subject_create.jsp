@@ -29,7 +29,7 @@
 				<div class="mb-3">
 					<button class="btn btn-secondary" id="filter-button">登録して終了</button>
 				</div>
-				<div><a href="StudentList.action">戻る</a></div>
+				<div><a href="SubjectList.action">戻る</a></div>
 			</form>
 		</section>
 	</c:param>
