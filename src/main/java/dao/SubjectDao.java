@@ -98,57 +98,35 @@ public class SubjectDao extends Dao{
 	}
 
 	
-	public boolean save(Subject subject) throws Exception{
-		// コネクションを確立
-		Connection connection = getConnection();
-		// プリペアードステートメント
-		PreparedStatement statement = null;
-		// 実行件数
-		int count = 0;
+	public boolean save(Subject subject) throws Exception {
+	    Connection connection = getConnection();
+	    PreparedStatement statement = null;
+	    int count = 0;
 
-		try {
+	    try {
+	        // 更新のみ（存在しない場合は 0 件更新）
+	        String sql =
+	            "UPDATE subject " +
+	            "SET name = ? " +
+	            "WHERE school_cd = ? AND cd = ?";
 
-			statement = connection.prepareStatement(
-					"merge into subject key(school_cd,cd) values(?,?,?,?) ");
-			statement.setString(1, subject.getSchool().getCd());
-			statement.setString(2, subject.getCd());
-			statement.setString(3, subject.getName());
-			statement.setBoolean(4, true);
-			
-			// プリペアードステートメントを実行
-			count = statement.executeUpdate();
-		}catch (Exception e){
-			e.printStackTrace();
-			statement.close();
-			connection.close();
-			return false;
-		} finally {
-			// プリペアードステートメントを閉じる
-			if (statement !=null) {
-				try{
-					statement.close();
-				}catch (SQLException sqle){
-					throw sqle;
-				}
-			}
-			// コネクションを閉じる
-			if (connection != null){
-				try{
-					connection.close();
-				} catch (SQLException sqle) {
-					throw sqle;
-				}
-			}
-		}
+	        statement = connection.prepareStatement(sql);
+	        statement.setString(1, subject.getName());
+	        statement.setString(2, subject.getSchool().getCd());
+	        statement.setString(3, subject.getCd());
 
-		if (count > 0) {
-			//実行件数が1件以上ある場合
-			return true;
-		} else {
-			// 実行件数が0件の場合
-			return false;
-		}
+	        count = statement.executeUpdate();
+
+	    } finally {
+	        if (statement != null) statement.close();
+	        if (connection != null) connection.close();
+	    }
+
+	    // 更新件数が 1 件以上なら成功
+	    return count > 0;
 	}
+
+
 
 	public boolean delete(Subject subject) throws Exception{
 		Connection connection = getConnection();

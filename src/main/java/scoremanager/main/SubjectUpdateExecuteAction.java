@@ -1,8 +1,9 @@
 package scoremanager.main;
 
-import bean.Student;
+import bean.School;
+import bean.Subject;
 import bean.Teacher;
-import dao.StudentDao;
+import dao.SubjectDao;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -10,30 +11,46 @@ import tool.Action;
 
 public class SubjectUpdateExecuteAction extends Action {
 
-	@Override
-	public void execute(HttpServletRequest req, HttpServletResponse res)
-			throws Exception {
-		HttpSession session = req.getSession();
-		Teacher teacher = (Teacher)session.getAttribute("user");
+    @Override
+    public void execute(HttpServletRequest req, HttpServletResponse res)
+            throws Exception {
 
-		int entYear = Integer.parseInt(req.getParameter("ent_year"));
-		String No = req.getParameter("no");
-		String name = req.getParameter("name");
-		String classNum = req.getParameter("class_num");
-		boolean isAttend = false;
-		isAttend = Boolean.parseBoolean(req.getParameter("is_attend"));
+        HttpSession session = req.getSession();
 
-		StudentDao sDao = new StudentDao();
-		Student student = sDao.get(No);
-		student.setNo(No);
-		student.setName(name);
-		student.setEntYear(entYear);
-		student.setClassNum(classNum);
-		student.setAttend(isAttend);
-		sDao.save(student);
+        // ログイン中の教師を取得
+        Teacher teacher = (Teacher) session.getAttribute("user");
 
-		req.getRequestDispatcher("student_update_done.jsp").forward(req, res);
+        // セッション切れ対策
+        if (teacher == null) {
+            res.sendRedirect("login.jsp");
+            return;
+        }
 
+        // 教師が所属する学校を取得
+        School school = teacher.getSchool();
 
-	}
+        // パラメータ取得
+        String cd = req.getParameter("cd");
+        String name = req.getParameter("name");
+
+        // 入力チェック（任意）
+        if (cd == null || cd.isEmpty() || name == null || name.isEmpty()) {
+            req.setAttribute("error", "科目名または科目コードが未入力です");
+            req.getRequestDispatcher("subject_update.jsp").forward(req, res);
+            return;
+        }
+
+        // 科目オブジェクト作成
+        Subject subject = new Subject();
+        subject.setCd(cd);
+        subject.setName(name);
+        subject.setSchool(school);
+
+        // DAOで保存（更新 or 追加）
+        SubjectDao sDao = new SubjectDao();
+        sDao.save(subject);
+
+        // 完了画面へ
+        req.getRequestDispatcher("subject_update_done.jsp").forward(req, res);
+    }
 }
