@@ -1,11 +1,7 @@
+
 package scoremanager.main;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-
 import bean.Teacher;
-import dao.ClassNumDao;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -13,29 +9,23 @@ import tool.Action;
 
 public class SubjectCreateAction extends Action {
 
-	@Override
-	public void execute(HttpServletRequest req, HttpServletResponse res)
-			throws Exception {
-		HttpSession session = req.getSession();
-		Teacher teacher = (Teacher)session.getAttribute("user");
-		LocalDate todaysDate = LocalDate.now();
-		int year = todaysDate.getYear();
-		ClassNumDao cNumDao = new ClassNumDao();
+    @Override
+    public void execute(HttpServletRequest req, HttpServletResponse res)
+            throws Exception {
 
-		//DBからデータ取得
-		//ログインユーザーの学校コードをもとにクラス番号の一覧を取得
-		//リストを初期化
-		List<Integer> entYearSet = new ArrayList<>();
-		// 10年前から1年後までをリストに追加
-		for (int i = year - 10; i < year + 11; i++){
-			entYearSet.add(i);
-		}
-		List<String> list = cNumDao.filter(teacher.getSchool());
+        HttpSession session = req.getSession();
+        Teacher teacher = (Teacher) session.getAttribute("user");
 
-		// リクエストにデータをセット
-		req.setAttribute("class_num_set", list);
-		req.setAttribute("ent_year_set", entYearSet);
+        // ★元コードと同じ構造に合わせて「初期値」をセット
+        // 入力値が残っている場合はそのまま使う
+        if (req.getAttribute("cd") == null) {
+            req.setAttribute("cd", "");
+        }
+        if (req.getAttribute("name") == null) {
+            req.setAttribute("name", "");
+        }
 
-		req.getRequestDispatcher("student_create.jsp").forward(req, res);
-	}
+        // ★元コードと同じように JSP をフォワード
+        req.getRequestDispatcher("subject_create.jsp").forward(req, res);
+    }
 }
