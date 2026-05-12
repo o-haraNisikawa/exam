@@ -17,7 +17,11 @@ public class SubjectUpdateAction extends Action {
         // パラメータ取得
         String cd = req.getParameter("cd");
         Teacher teacher = (Teacher) req.getSession().getAttribute("user");
-        
+
+        // 教師が所属する学校を取得
+        School school = teacher.getSchool();
+     // ★ 学校コードを取得（追加）
+        String schoolCd = school.getCd();
         
         // パラメータ未指定なら一覧へ戻す
         if (cd == null || cd.isEmpty()) {
@@ -25,18 +29,6 @@ public class SubjectUpdateAction extends Action {
             req.getRequestDispatcher("SubjectList.action").forward(req, res);
             return;
         }
-
-
-
-        // セッション切れ対策
-        if (teacher == null) {
-            res.sendRedirect("login.jsp");
-            return;
-        }
-        
-
-        // 教師が所属する学校を取得
-        School school = teacher.getSchool();
 
         // 科目取得
         SubjectDao sDao = new SubjectDao();
