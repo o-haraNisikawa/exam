@@ -14,9 +14,11 @@ public class SubjectUpdateAction extends Action {
     public void execute(HttpServletRequest req, HttpServletResponse res)
             throws Exception {
 
-        // パラメータ取得（科目コード）
+        // パラメータ取得
         String cd = req.getParameter("cd");
-
+        Teacher teacher = (Teacher) req.getSession().getAttribute("user");
+        
+        
         // パラメータ未指定なら一覧へ戻す
         if (cd == null || cd.isEmpty()) {
             req.setAttribute("error", "科目コードが指定されていません");
@@ -24,8 +26,7 @@ public class SubjectUpdateAction extends Action {
             return;
         }
 
-        // ログイン中の教師を取得
-        Teacher teacher = (Teacher) req.getSession().getAttribute("user");
+
 
         // セッション切れ対策
         if (teacher == null) {

@@ -15,7 +15,7 @@
 			<form method="get" action="SubjectCreateExecute.action">
 				<div class="mb-3">
 						<label for="input1" class="form-label">科目コード</label>
-						<input class="form-control" name="no" type="text" id="input1"
+						<input class="form-control" name="cd" type="text" id="input1"
 						placeholder="科目コードを入力してください" value="${cd}"
 						maxlength="10" required />
 						<p class="mt2 text-warning">${errors.get("f1")}</p>

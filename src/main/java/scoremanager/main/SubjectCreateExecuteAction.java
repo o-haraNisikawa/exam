@@ -17,7 +17,7 @@ public class SubjectCreateExecuteAction extends Action {
     public void execute(HttpServletRequest req, HttpServletResponse res)
             throws Exception {
 
-        String cd = req.getParameter("no");
+        String cd = req.getParameter("cd");
         String name = req.getParameter("name");
 
         HttpSession session = req.getSession();
