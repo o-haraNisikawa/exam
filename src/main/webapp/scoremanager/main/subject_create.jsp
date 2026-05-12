@@ -18,7 +18,7 @@
 						<input class="form-control" name="cd" type="text" id="input1"
 						placeholder="科目コードを入力してください" value="${cd}"
 						maxlength="10" required />
-						<p class="mt2 text-warning">${errors.get("f1")}</p>
+						<p class="mt2 text-warning">${errors.get("cd")}</p>
 				</div>
 				<div class="mb-3">
 						<label class="form-label" for="input2">科目名</label>

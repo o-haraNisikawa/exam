@@ -108,15 +108,14 @@ public class SubjectDao extends Dao{
 
 	        String sql =
 	            "INSERT INTO subject " +
-	            "(cd, name, school_cd, is_true) " +
-	            "VALUES (?, ?, ?, ?)";
+	            "(cd, name, school_cd) " +
+	            "VALUES (?, ?, ?)";
 
 	        statement = connection.prepareStatement(sql);
 
 	        statement.setString(1, subject.getCd());
 	        statement.setString(2, subject.getName());
 	        statement.setString(3, subject.getSchool().getCd());
-	        statement.setBoolean(4, true);
 
 	        count = statement.executeUpdate();
 
@@ -128,7 +127,34 @@ public class SubjectDao extends Dao{
 
 	    return count > 0;
 	}
+	public boolean update(String oldCd, Subject subject)
+	        throws Exception {
 
+	    Connection connection = getConnection();
+	    PreparedStatement statement = null;
+
+	    int count = 0;
+
+	    try {
+	        statement = connection.prepareStatement(
+	            "update subject " +
+	            "set cd=?, name=? " +
+	            "where school_cd=? and cd=?"
+	        );
+
+	        statement.setString(1, subject.getCd());
+	        statement.setString(2, subject.getName());
+	        statement.setString(3, subject.getSchool().getCd());
+	        statement.setString(4, oldCd);
+
+	        count = statement.executeUpdate();
+
+	    } finally {
+	        if (statement != null) statement.close();
+	        if (connection != null) connection.close();
+	    }
+	    return count > 0;
+	}
 
 
 	public boolean delete(Subject subject) throws Exception {
@@ -174,35 +200,6 @@ public class SubjectDao extends Dao{
 	        }
 	    }
 
-	    return count > 0;
-	}
-	
-	public boolean update(String oldCd, Subject subject)
-	        throws Exception {
-
-	    Connection connection = getConnection();
-	    PreparedStatement statement = null;
-
-	    int count = 0;
-
-	    try {
-	        statement = connection.prepareStatement(
-	            "update subject " +
-	            "set cd=?, name=? " +
-	            "where school_cd=? and cd=?"
-	        );
-
-	        statement.setString(1, subject.getCd());
-	        statement.setString(2, subject.getName());
-	        statement.setString(3, subject.getSchool().getCd());
-	        statement.setString(4, oldCd);
-
-	        count = statement.executeUpdate();
-
-	    } finally {
-	        if (statement != null) statement.close();
-	        if (connection != null) connection.close();
-	    }
 	    return count > 0;
 	}
 

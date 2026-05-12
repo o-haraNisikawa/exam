@@ -24,16 +24,7 @@ public class SubjectCreateExecuteAction extends Action {
         Teacher teacher = (Teacher) session.getAttribute("user");
 
         Map<String, String> errors = new HashMap<>();
-
-        // 入力チェック
-        if (cd == null || cd.isEmpty()) {
-            errors.put("cd", "科目コードを入力してください");
-        }
-
-        if (name == null || name.isEmpty()) {
-            errors.put("name", "科目名を入力してください");
-        }
-
+        
         SubjectDao dao = new SubjectDao();
 
         // 重複チェック
@@ -50,8 +41,7 @@ public class SubjectCreateExecuteAction extends Action {
             req.setAttribute("cd", cd);
             req.setAttribute("name", name);
 
-            req.getRequestDispatcher("SubjectCreate.action")
-               .forward(req, res);
+            req.getRequestDispatcher("subject_create.jsp").forward(req, res);
 
             return;
         }
