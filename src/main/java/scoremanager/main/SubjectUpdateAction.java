@@ -43,6 +43,7 @@ public class SubjectUpdateAction extends Action {
 
         // JSP に渡す
         req.setAttribute("subject", subject);
+        req.setAttribute("schoolCd", schoolCd);
 
         // 画面遷移
         req.getRequestDispatcher("subject_update.jsp").forward(req, res);
