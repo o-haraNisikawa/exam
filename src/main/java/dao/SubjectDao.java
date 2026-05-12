@@ -99,30 +99,33 @@ public class SubjectDao extends Dao{
 
 	
 	public boolean save(Subject subject) throws Exception {
+
 	    Connection connection = getConnection();
 	    PreparedStatement statement = null;
 	    int count = 0;
 
 	    try {
-	        // 更新のみ（存在しない場合は 0 件更新）
+
 	        String sql =
-	            "UPDATE subject " +
-	            "SET name = ? " +
-	            "WHERE school_cd = ? AND cd = ?";
+	            "INSERT INTO subject " +
+	            "(cd, name, school_cd, is_true) " +
+	            "VALUES (?, ?, ?, ?)";
 
 	        statement = connection.prepareStatement(sql);
-	        statement.setString(1, subject.getName());
-	        statement.setString(2, subject.getSchool().getCd());
-	        statement.setString(3, subject.getCd());
+
+	        statement.setString(1, subject.getCd());
+	        statement.setString(2, subject.getName());
+	        statement.setString(3, subject.getSchool().getCd());
+	        statement.setBoolean(4, true);
 
 	        count = statement.executeUpdate();
 
 	    } finally {
+
 	        if (statement != null) statement.close();
 	        if (connection != null) connection.close();
 	    }
 
-	    // 更新件数が 1 件以上なら成功
 	    return count > 0;
 	}
 
