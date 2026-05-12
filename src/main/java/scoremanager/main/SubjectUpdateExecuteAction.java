@@ -49,7 +49,7 @@ public class SubjectUpdateExecuteAction extends Action {
         // DAOで保存（更新 or 追加）
         SubjectDao sDao = new SubjectDao();
         sDao.save(subject);
-
+        sDao.delete(subject);
         // 完了画面へ
         req.getRequestDispatcher("subject_update_done.jsp").forward(req, res);
     }
