@@ -13,7 +13,8 @@
 		<section class="me-4">
 			<h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2 px-4">科目情報変更</h2>
 			<form method="get" action="SubjectUpdateExecute.action">
-			<div class="mx-3 my-4">
+		    <input type="hidden" name="oldCd" value="${subject.getCd()}">
+    		<div class="mx-3 my-4">
 				<div class="mb-3">
 					<label class="form-text-label" for="subjectName">科目名</label>
 					<input class="form-control" name="name" type="text" id="subjectName"
