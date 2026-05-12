@@ -54,6 +54,7 @@ public class SubjectUpdateExecuteAction extends Action {
 
         sDao.update(subject);
 
+        
         // 完了画面へ
         req.getRequestDispatcher("subject_update_done.jsp").forward(req, res);
     }
