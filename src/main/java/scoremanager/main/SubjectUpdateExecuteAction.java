@@ -30,27 +30,36 @@ public class SubjectUpdateExecuteAction extends Action {
         School school = teacher.getSchool();
 
         // パラメータ取得
+        String oldCd = req.getParameter("oldCd");
         String cd = req.getParameter("cd");
         String name = req.getParameter("name");
 
-        // 入力チェック（任意）
-        if (cd == null || cd.isEmpty() || name == null || name.isEmpty()) {
+        // 入力チェック
+        if (cd == null || cd.isEmpty()
+                || name == null || name.isEmpty()) {
+
             req.setAttribute("error", "科目名または科目コードが未入力です");
-            req.getRequestDispatcher("subject_update.jsp").forward(req, res);
+
+            req.getRequestDispatcher("subject_update.jsp")
+                    .forward(req, res);
+
             return;
         }
 
         // 科目オブジェクト作成
         Subject subject = new Subject();
+
         subject.setCd(cd);
         subject.setName(name);
         subject.setSchool(school);
 
-        // DAOで保存（更新 or 追加）
+        // DAOで更新
         SubjectDao sDao = new SubjectDao();
-        sDao.update(subject);
+
+        sDao.update(oldCd, subject);
 
         // 完了画面へ
-        req.getRequestDispatcher("subject_update_done.jsp").forward(req, res);
+        req.getRequestDispatcher("subject_update_done.jsp")
+                .forward(req, res);
     }
 }
