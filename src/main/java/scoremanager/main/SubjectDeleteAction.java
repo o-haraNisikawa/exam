@@ -16,8 +16,6 @@ public class SubjectDeleteAction extends Action {
 
         // セッション取得
         HttpSession session = req.getSession();
-
-        // ログインユーザー取得
         Teacher teacher = (Teacher) session.getAttribute("user");
 
         // 未ログイン対策
@@ -33,29 +31,19 @@ public class SubjectDeleteAction extends Action {
 
         // 未指定チェック
         if (cd == null || cd.isEmpty()) {
-
             req.setAttribute("error", "科目コードが指定されていません");
-
-            req.getRequestDispatcher("SubjectList.action")
-               .forward(req, res);
-
+            req.getRequestDispatcher("SubjectList.action").forward(req, res);
             return;
         }
 
         // 科目取得
         SubjectDao sDao = new SubjectDao();
-
-        Subject subject =
-                sDao.get(cd, teacher.getSchool());
+        Subject subject =sDao.get(cd, teacher.getSchool());
 
         // 存在チェック
         if (subject == null) {
-
             req.setAttribute("error", "科目が存在しません");
-
-            req.getRequestDispatcher("SubjectList.action")
-               .forward(req, res);
-
+            req.getRequestDispatcher("SubjectList.action").forward(req, res);
             return;
         }
 
