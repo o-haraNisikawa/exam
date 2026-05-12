@@ -60,41 +60,41 @@ public class SubjectDao extends Dao{
 
 	public List<Subject> filter(School school, boolean filter) throws Exception {
 
-	    List<Subject> list = new ArrayList<>();
+		List<Subject> list = new ArrayList<>();
 
-	    Connection connection = getConnection();
-	    PreparedStatement statement = null;
-	    ResultSet rSet = null;
+		Connection connection = getConnection();
+		PreparedStatement statement = null;
+		ResultSet rSet = null;
 
-	    try {
+		try {
 
-	        statement = connection.prepareStatement(
-	            "select * from subject where school_cd=? and is_true=true"
-	        );
+			statement = connection.prepareStatement(
+				"select * from subject where school_cd=?"
+			);
 
-	        statement.setString(1, school.getCd());
+			statement.setString(1, school.getCd());
 
-	        rSet = statement.executeQuery();
+			rSet = statement.executeQuery();
 
-	        while (rSet.next()) {
+			while (rSet.next()) {
 
-	            Subject subject = new Subject();
+				Subject subject = new Subject();
 
-	            subject.setCd(rSet.getString("cd"));
-	            subject.setName(rSet.getString("name"));
-	            subject.setSchool(school);
+				subject.setCd(rSet.getString("cd"));
+				subject.setName(rSet.getString("name"));
+				subject.setSchool(school);
 
-	            list.add(subject);
-	        }
+				list.add(subject);
+			}
 
-	    } finally {
+		} finally {
 
-	        if (rSet != null) rSet.close();
-	        if (statement != null) statement.close();
-	        if (connection != null) connection.close();
-	    }
+			if (rSet != null) rSet.close();
+			if (statement != null) statement.close();
+			if (connection != null) connection.close();
+		}
 
-	    return list;
+		return list;
 	}
 
 	
@@ -131,44 +131,50 @@ public class SubjectDao extends Dao{
 
 
 
-	public boolean delete(Subject subject) throws Exception{
-		Connection connection = getConnection();
-		PreparedStatement statement = null;
-		int count = 0;
-		try{
-			statement = connection.prepareStatement(
-				"update subject set is_true = ? where school_cd = ? and cd = ?");
-			statement.setBoolean(1, false);
-			statement.setString(2, subject.getSchool().getCd());
-			statement.setString(3, subject.getCd());
-			count = statement.executeUpdate();
-		}catch (Exception e) {
-			throw e;
-		}finally {
-			// プリペアードステートメントを閉じる
-			if (statement !=null) {
-				try{
-					statement.close();
-				}catch (SQLException sqle){
-					throw sqle;
-				}
-			}
-			// コネクションを閉じる
-			if (connection != null){
-				try{
-					connection.close();
-				} catch (SQLException sqle) {
-					throw sqle;
-				}
-			}
-		}
-		if (count > 0) {
-			//実行件数が1件以上ある場合
-			return true;
-		} else {
-			// 実行件数が0件の場合
-			return false;
-		}
+	public boolean delete(Subject subject) throws Exception {
+
+	    Connection connection = getConnection();
+	    PreparedStatement statement = null;
+
+	    int count = 0;
+
+	    try {
+
+	        statement = connection.prepareStatement(
+	            "delete from subject where school_cd=? and cd=?"
+	        );
+
+	        statement.setString(1, subject.getSchool().getCd());
+	        statement.setString(2, subject.getCd());
+
+	        count = statement.executeUpdate();
+
+	    } catch (Exception e) {
+
+	        throw e;
+
+	    } finally {
+
+	        if (statement != null) {
+
+	            try {
+	                statement.close();
+	            } catch (SQLException sqle) {
+	                throw sqle;
+	            }
+	        }
+
+	        if (connection != null) {
+
+	            try {
+	                connection.close();
+	            } catch (SQLException sqle) {
+	                throw sqle;
+	            }
+	        }
+	    }
+
+	    return count > 0;
 	}
 	
 	public boolean update(String oldCd, Subject subject)
