@@ -23,28 +23,49 @@ public class SubjectCreateExecuteAction extends Action {
         HttpSession session = req.getSession();
         Teacher teacher = (Teacher) session.getAttribute("user");
 
-        // バリデーション例
         Map<String, String> errors = new HashMap<>();
+
+        // 入力チェック
         if (cd == null || cd.isEmpty()) {
-            errors.put("f1", "科目コードを入力してください");
+            errors.put("cd", "科目コードを入力してください");
         }
 
+        if (name == null || name.isEmpty()) {
+            errors.put("name", "科目名を入力してください");
+        }
+
+        SubjectDao dao = new SubjectDao();
+
+        // 重複チェック
+        Subject exists = dao.get(cd, teacher.getSchool());
+
+        if (exists != null) {
+            errors.put("cd", "その科目コードは既に登録されています");
+        }
+
+        // エラー時
         if (!errors.isEmpty()) {
+
             req.setAttribute("errors", errors);
             req.setAttribute("cd", cd);
             req.setAttribute("name", name);
-            req.getRequestDispatcher("SubjectCreate.action").forward(req, res);
+
+            req.getRequestDispatcher("SubjectCreate.action")
+               .forward(req, res);
+
             return;
         }
 
+        // 保存
         Subject subject = new Subject();
+
         subject.setCd(cd);
         subject.setName(name);
         subject.setSchool(teacher.getSchool());
 
-        SubjectDao dao = new SubjectDao();
         dao.save(subject);
 
+        // 一覧へ
         res.sendRedirect("SubjectList.action");
     }
 }
