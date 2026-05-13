@@ -27,6 +27,10 @@ public class SubjectCreateExecuteAction extends Action {
         
         SubjectDao dao = new SubjectDao();
 
+        // 文字数チェック
+        if (cd == null || cd.length() != 3) {
+            errors.put("cd", "科目コードは3文字で入力してください");
+        }
         // 重複チェック
         Subject exists = dao.get(cd, teacher.getSchool());
 
