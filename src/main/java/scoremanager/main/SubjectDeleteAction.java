@@ -20,30 +20,14 @@ public class SubjectDeleteAction extends Action {
 
         // 教師が所属する学校を取得
         School school = teacher.getSchool();
-     // ★ 学校コードを取得（追加）
-        String schoolCd = school.getCd();
-        
-        // パラメータ未指定なら一覧へ戻す
-        if (cd == null || cd.isEmpty()) {
-            req.setAttribute("error", "科目コードが指定されていません");
-            req.getRequestDispatcher("SubjectList.action").forward(req, res);
-            return;
-        }
 
         // 科目取得
         SubjectDao sDao = new SubjectDao();
         Subject subject = sDao.get(cd, school);
 
-        // 科目が存在しない場合
-        if (subject == null) {
-            req.setAttribute("error", "指定された科目は存在しません");
-            req.getRequestDispatcher("SubjectList.action").forward(req, res);
-            return;
-        }
 
         // JSP に渡す
         req.setAttribute("subject", subject);
-        req.setAttribute("schoolCd", schoolCd);
 
         // 画面遷移
         req.getRequestDispatcher("subject_delete.jsp").forward(req, res);

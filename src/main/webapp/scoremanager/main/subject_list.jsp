@@ -42,7 +42,6 @@
 					<div class="col-2 text-center">
 						<button class="btn btn-secondary" id="filter-button">絞り込み</button>
 					</div>
-					<div class="mt-2 text-warning">${errors.get("f1")}</div>
 				</div>
 			</form>			
 			<c:choose>
@@ -70,7 +69,9 @@
 			    </c:when>
 			
 			    <c:otherwise>
-			        <div>科目情報が存在しませんでした。</div>
+			        
+			        <div class="mt-2 text-warning">${errors.get("sub_not_found")}</div>
+			        
 			    </c:otherwise>
 			</c:choose>
 		</section>
