@@ -59,7 +59,7 @@ public class SubjectCreateExecuteAction extends Action {
 
         dao.save(subject);
 
-        // 一覧へ
-        res.sendRedirect("SubjectList.action");
+     // 登録完了画面へ
+        req.getRequestDispatcher("subject_create_done.jsp").forward(req, res);
     }
 }
