@@ -1,11 +1,11 @@
 package scoremanager.main;
 
+import bean.School;
 import bean.Subject;
 import bean.Teacher;
 import dao.SubjectDao;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import tool.Action;
 
 public class SubjectDeleteAction extends Action {
@@ -14,43 +14,22 @@ public class SubjectDeleteAction extends Action {
     public void execute(HttpServletRequest req, HttpServletResponse res)
             throws Exception {
 
-        // セッション取得
-        HttpSession session = req.getSession();
-        Teacher teacher = (Teacher) session.getAttribute("user");
-
-        // 未ログイン対策
-        if (teacher == null) {
-
-            res.sendRedirect("login.jsp");
-
-            return;
-        }
-
         // パラメータ取得
         String cd = req.getParameter("cd");
+        Teacher teacher = (Teacher) req.getSession().getAttribute("user");
 
-        // 未指定チェック
-        if (cd == null || cd.isEmpty()) {
-            req.setAttribute("error", "科目コードが指定されていません");
-            req.getRequestDispatcher("SubjectList.action").forward(req, res);
-            return;
-        }
+        // 教師が所属する学校を取得
+        School school = teacher.getSchool();
 
         // 科目取得
         SubjectDao sDao = new SubjectDao();
-        Subject subject =sDao.get(cd, teacher.getSchool());
+        Subject subject = sDao.get(cd, school);
 
-        // 存在チェック
-        if (subject == null) {
-            req.setAttribute("error", "科目が存在しません");
-            req.getRequestDispatcher("SubjectList.action").forward(req, res);
-            return;
-        }
 
-        // 論理削除
-        sDao.delete(subject);
+        // JSP に渡す
+        req.setAttribute("subject", subject);
 
-        // 一覧へ戻る
-        res.sendRedirect("SubjectList.action");
+        // 画面遷移
+        req.getRequestDispatcher("subject_delete.jsp").forward(req, res);
     }
 }

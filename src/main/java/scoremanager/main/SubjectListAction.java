@@ -113,7 +113,7 @@ public class SubjectListAction extends Action {
 		// エラー
 		if (subjects.size() == 0) {
 
-			errors.put("f1", "科目情報が存在しませんでした。");
+			errors.put("sub_not_found", "科目情報が存在しませんでした。");
 		}
 
 		// ------------------------

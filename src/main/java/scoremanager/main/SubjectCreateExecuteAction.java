@@ -24,18 +24,13 @@ public class SubjectCreateExecuteAction extends Action {
         Teacher teacher = (Teacher) session.getAttribute("user");
 
         Map<String, String> errors = new HashMap<>();
-
-        // 入力チェック
-        if (cd == null || cd.isEmpty()) {
-            errors.put("cd", "科目コードを入力してください");
-        }
-
-        if (name == null || name.isEmpty()) {
-            errors.put("name", "科目名を入力してください");
-        }
-
+        
         SubjectDao dao = new SubjectDao();
 
+        // 文字数チェック
+        if (cd == null || cd.length() != 3) {
+            errors.put("cd", "科目コードは3文字で入力してください");
+        }
         // 重複チェック
         Subject exists = dao.get(cd, teacher.getSchool());
 
@@ -50,8 +45,7 @@ public class SubjectCreateExecuteAction extends Action {
             req.setAttribute("cd", cd);
             req.setAttribute("name", name);
 
-            req.getRequestDispatcher("SubjectCreate.action")
-               .forward(req, res);
+            req.getRequestDispatcher("subject_create.jsp").forward(req, res);
 
             return;
         }
@@ -65,7 +59,7 @@ public class SubjectCreateExecuteAction extends Action {
 
         dao.save(subject);
 
-        // 一覧へ
-        res.sendRedirect("SubjectList.action");
+     // 登録完了画面へ
+        req.getRequestDispatcher("subject_create_done.jsp").forward(req, res);
     }
 }
