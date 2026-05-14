@@ -98,7 +98,7 @@ public class SubjectDao extends Dao{
 	}
 
 	
-	public boolean save(Subject subject) throws Exception {
+	public boolean save(String oldCd, Subject subject) throws Exception {
 
 	    Connection connection = getConnection();
 	    PreparedStatement statement = null;
@@ -106,53 +106,44 @@ public class SubjectDao extends Dao{
 
 	    try {
 
-	        String sql =
-	            "INSERT INTO subject " +
-	            "(cd, name, school_cd) " +
-	            "VALUES (?, ?, ?)";
+	        if (oldCd == null) {
 
-	        statement = connection.prepareStatement(sql);
+	            String sql =
+	                "insert into subject " +
+	                "(cd, name, school_cd) " +
+	                "values (?, ?, ?)";
 
-	        statement.setString(1, subject.getCd());
-	        statement.setString(2, subject.getName());
-	        statement.setString(3, subject.getSchool().getCd());
+	            statement = connection.prepareStatement(sql);
 
+	            statement.setString(1, subject.getCd());
+	            statement.setString(2, subject.getName());
+	            statement.setString(3, subject.getSchool().getCd());
+
+	        } else {
+
+	            String sql =
+	                "update subject " +
+	                "set cd=?, name=? " +
+	                "where school_cd=? and cd=?";
+
+	            statement = connection.prepareStatement(sql);
+
+	            statement.setString(1, subject.getCd());
+	            statement.setString(2, subject.getName());
+	            statement.setString(3, subject.getSchool().getCd());
+	            statement.setString(4, oldCd);
+	        }
 	        count = statement.executeUpdate();
 
 	    } finally {
-
-	        if (statement != null) statement.close();
-	        if (connection != null) connection.close();
+	        if (statement != null) {
+	            statement.close();
+	        }
+	        if (connection != null) {
+	            connection.close();
+	        }
 	    }
 
-	    return count > 0;
-	}
-	public boolean update(String oldCd, Subject subject)
-	        throws Exception {
-
-	    Connection connection = getConnection();
-	    PreparedStatement statement = null;
-
-	    int count = 0;
-
-	    try {
-	        statement = connection.prepareStatement(
-	            "update subject " +
-	            "set cd=?, name=? " +
-	            "where school_cd=? and cd=?"
-	        );
-
-	        statement.setString(1, subject.getCd());
-	        statement.setString(2, subject.getName());
-	        statement.setString(3, subject.getSchool().getCd());
-	        statement.setString(4, oldCd);
-
-	        count = statement.executeUpdate();
-
-	    } finally {
-	        if (statement != null) statement.close();
-	        if (connection != null) connection.close();
-	    }
 	    return count > 0;
 	}
 

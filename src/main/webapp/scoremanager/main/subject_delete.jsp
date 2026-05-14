@@ -17,7 +17,7 @@
 		    <input type="hidden" name="Cd" value="${subject.getCd()}">
     		<div class="mx-3 my-4">
     		<p>
-    		「${subject.getName()}(${subject.getCd()}」を削除してもよろしいですか
+    		「${subject.getName()}(${subject.getCd()})」を削除してもよろしいですか
     		</p>
 				<div class="mb-3 container">
 					<div class="row">

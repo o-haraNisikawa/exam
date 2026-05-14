@@ -16,8 +16,7 @@ public class SubjectCreateAction extends Action {
         HttpSession session = req.getSession();
         Teacher teacher = (Teacher) session.getAttribute("user");
 
-        // ★元コードと同じ構造に合わせて「初期値」をセット
-        // 入力値が残っている場合はそのまま使う
+        // 「初期値」をセット、入力値が残っている場合はそのまま使う
         if (req.getAttribute("cd") == null) {
             req.setAttribute("cd", "");
         }
@@ -25,7 +24,7 @@ public class SubjectCreateAction extends Action {
             req.setAttribute("name", "");
         }
 
-        // ★元コードと同じように JSP をフォワード
+        //JSP をフォワード
         req.getRequestDispatcher("subject_create.jsp").forward(req, res);
     }
 }

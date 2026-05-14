@@ -22,9 +22,7 @@ public class SubjectCreateExecuteAction extends Action {
 
         HttpSession session = req.getSession();
         Teacher teacher = (Teacher) session.getAttribute("user");
-
         Map<String, String> errors = new HashMap<>();
-        
         SubjectDao dao = new SubjectDao();
 
         // 文字数チェック
@@ -33,7 +31,7 @@ public class SubjectCreateExecuteAction extends Action {
         }
         // 重複チェック
         Subject exists = dao.get(cd, teacher.getSchool());
-
+        
         if (exists != null) {
             errors.put("cd", "その科目コードは既に登録されています");
         }
@@ -44,7 +42,6 @@ public class SubjectCreateExecuteAction extends Action {
             req.setAttribute("errors", errors);
             req.setAttribute("cd", cd);
             req.setAttribute("name", name);
-
             req.getRequestDispatcher("subject_create.jsp").forward(req, res);
 
             return;
@@ -57,7 +54,7 @@ public class SubjectCreateExecuteAction extends Action {
         subject.setName(name);
         subject.setSchool(teacher.getSchool());
 
-        dao.save(subject);
+        dao.save(null,subject);
 
      // 登録完了画面へ
         req.getRequestDispatcher("subject_create_done.jsp").forward(req, res);

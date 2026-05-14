@@ -17,8 +17,7 @@ public class SubjectDeleteAction extends Action {
         // パラメータ取得
         String cd = req.getParameter("cd");
         Teacher teacher = (Teacher) req.getSession().getAttribute("user");
-
-        // 教師が所属する学校を取得
+        
         School school = teacher.getSchool();
 
         // 科目取得
@@ -29,7 +28,7 @@ public class SubjectDeleteAction extends Action {
         // JSP に渡す
         req.setAttribute("subject", subject);
 
-        // 画面遷移
+        // JSPにフォワード
         req.getRequestDispatcher("subject_delete.jsp").forward(req, res);
     }
 }
