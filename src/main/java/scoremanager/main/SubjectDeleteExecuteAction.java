@@ -17,7 +17,6 @@ public class SubjectDeleteExecuteAction extends Action {
 
         HttpSession session = req.getSession();
 
-        // ログイン中の教師を取得
         Teacher teacher = (Teacher) session.getAttribute("user");
 
         // セッション切れ対策
@@ -26,7 +25,6 @@ public class SubjectDeleteExecuteAction extends Action {
             return;
         }
 
-        // 教師が所属する学校を取得
         School school = teacher.getSchool();
 
         // パラメータ取得
@@ -40,16 +38,14 @@ public class SubjectDeleteExecuteAction extends Action {
         subject.setName(name);
         subject.setSchool(school);
 
-        // DAOで更新
         SubjectDao sDao = new SubjectDao();
 
         // 既存科目チェック
         Subject exists = sDao.get(cd, school);
 
-        // 更新
+        // 削除
         sDao.delete(subject);
-        // 完了画面へ
-        req.getRequestDispatcher("subject_delete_done.jsp")
-                .forward(req, res);
+        // JSPにフォワード
+        req.getRequestDispatcher("subject_delete_done.jsp").forward(req, res);
     }
 }
