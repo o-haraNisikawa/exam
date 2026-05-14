@@ -73,7 +73,7 @@ public class SubjectUpdateExecuteAction extends Action {
         }
 
         // 更新
-        sDao.update(oldCd, subject);
+        sDao.save(oldCd, subject);
         // 完了画面へ
         req.getRequestDispatcher("subject_update_done.jsp")
                 .forward(req, res);

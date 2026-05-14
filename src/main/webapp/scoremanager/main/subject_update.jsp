@@ -27,9 +27,12 @@
 						placeholder="科目名を入力してください" value="${subject.getName()}"
 						maxlength="30" required />
 				</div>
-				
-				<div><a href="SubjectList.action">戻る</a></div>
-			</div>
+				<div class="mb-3 container">
+					<div class="row">
+						<input class="col btn btn-primary" type="submit" id="filter-button" value="変更" style="max-width:60px">
+						<div><a href="SubjectList.action">戻る</a></div>
+					</div>
+				</div>
 			</form>
 		</section>
 	</c:param>

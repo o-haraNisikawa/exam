@@ -57,7 +57,7 @@ public class SubjectCreateExecuteAction extends Action {
         subject.setName(name);
         subject.setSchool(teacher.getSchool());
 
-        dao.save(subject);
+        dao.save(null,subject);
 
      // 登録完了画面へ
         req.getRequestDispatcher("subject_create_done.jsp").forward(req, res);
