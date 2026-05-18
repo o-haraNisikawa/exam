@@ -23,7 +23,7 @@
 					<div class="row">
 
 						<div class="col d-flex justify-content-end">
-							<a type="submit" href="SubjectDeleteExecute.action?cd=${subject.getCd()}" class="btn btn-danger" role="button" style="max-width:60px">
+							<a type="submit" href="SubjectDeleteDone.action?cd=${subject.getCd()}" class="btn btn-danger" role="button" style="max-width:60px">
 								削除
 							</a>
 						</div>

@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import tool.Action;
 
-public class SubjectDeleteExecuteAction extends Action {
+public class SubjectDeleteDoneAction extends Action {
 
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse res)
