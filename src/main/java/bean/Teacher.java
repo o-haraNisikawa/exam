@@ -3,58 +3,42 @@ package bean;
 import java.io.Serializable;
 
 public class Teacher extends User implements Serializable {
-	/**
-	 * 教員ID:String
-	 */
-	private String id;
 
-	/**
-	 * パスワード:String
-	 */
-	private String password;
+    private String id;
+    private String password;
+    private String name;
+    private School school;
 
-	/**
-	 * 教員名:String
-	 */
-	private String name;
+    public String getId() {
+        return id;
+    }
 
-	/**
-	 * 所属校:School
-	 */
-	private School school;
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	/**
-	 * ゲッター・セッター
-	 */
-	public String getId() {
-		return id;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public School getSchool() {
+        return school;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public School getSchool() {
-		return school;
-	}
-
-	public void setSchool(School school) {
-		this.school = school;
-	}
+    public void setSchool(School school) {
+        this.school = school;
+    }
 }
+
