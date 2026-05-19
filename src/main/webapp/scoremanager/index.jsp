@@ -12,6 +12,5 @@ location.href="Login.action";
 </script>
 </head>
 <body>
-
 </body>
 </html>
