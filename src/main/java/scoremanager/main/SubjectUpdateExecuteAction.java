@@ -59,18 +59,16 @@ public class SubjectUpdateExecuteAction extends Action {
         // 既存科目チェック
         Subject exists = sDao.get(cd, school);
 
-        // 「別の科目」が同じコードを使っている場合
-        if (exists != null && !cd.equals(oldCd)) {
+        if(exists == null){
 
-            req.setAttribute("error", "科目コードが重複しています");
+            req.setAttribute("error", "科目コードが存在していません");
 
             req.setAttribute("subject", subject);
 
-            req.getRequestDispatcher("subject_update.jsp")
-                    .forward(req, res);
-
+            req.getRequestDispatcher("subject_update.jsp").forward(req, res);
             return;
         }
+        
 
         // 更新
         sDao.save(oldCd, subject);

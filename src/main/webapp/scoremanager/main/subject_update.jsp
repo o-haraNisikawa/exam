@@ -26,7 +26,10 @@
 					<input class="form-control" name="name" type="text" id="subjectName"
 						placeholder="科目名を入力してください" value="${subject.getName()}"
 						maxlength="30" required />
+				<p class="mt2 text-warning">${error}</p>
 				</div>
+				
+				
 				<div class="mb-3 container">
 					<div class="row">
 						<input class="col btn btn-primary" type="submit" id="filter-button" value="変更" style="max-width:60px">
