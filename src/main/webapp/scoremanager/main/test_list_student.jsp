@@ -78,15 +78,17 @@
                         <h5 class="fw-bold">学生情報</h5>
                     </div>
 
-                    <!-- 学生番号 -->
-                    <div class="col-4">
-                        <label class="form-label">学生番号</label>
-                        <input type="text"
-                               class="form-control"
-                               name="student_no"
-                               value="${student_no}"
-                               placeholder="学生番号を入力してください">
-                    </div>
+                   <!-- 学生番号 -->
+					<div class="col-4">
+					    <label class="form-label">学生番号</label>
+					    <input type="text"
+					           class="form-control"
+					           name="student_no"
+					           value="${student_no}"
+					           placeholder="学生番号を入力してください"
+					           <c:if test="${param.btn == '32'}">required</c:if>>
+					</div>
+                   
 
                     <!-- 学生別検索ボタン -->
                     <div class="col-3 mt-4 text-center">

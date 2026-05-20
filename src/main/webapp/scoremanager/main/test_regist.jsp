@@ -87,10 +87,9 @@
 
             <!-- ▼ 検索結果（学生一覧） ▼ -->
             <c:if test="${not empty student_list}">
-                <!-- ▼ 科目名と回数の表示 -->
                 <div class="px-4 mb-2 fw-bold">科目：${subject_name}（${f4}回目）</div>
 
-                <form method="post" action="/exam/scoremanager/main/TestRegist.action">
+                <form method="post" action="/exam/scoremanager/main/TestRegist.action" novalidate>
 
                     <input type="hidden" name="f1" value="${f1}">
                     <input type="hidden" name="f2" value="${f2}">
@@ -122,9 +121,16 @@
                                         <input type="number"
                                                class="form-control"
                                                name="point"
-                                               min="0" max="100"
+                                               value="${st.point}"
                                                placeholder="0～100">
+
+                                        <c:if test="${not empty errorIndexList && errorIndexList.contains(status.index)}">
+                                            <div class="text-warning mt-1" style="font-size: 0.9rem;">
+                                                0～100の範囲で入力してください
+                                            </div>
+                                        </c:if>
                                     </td>
+
                                 </tr>
                             </c:forEach>
                         </tbody>

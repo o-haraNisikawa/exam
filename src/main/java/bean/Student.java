@@ -12,6 +12,9 @@ public class Student implements Serializable {
     private boolean isAttend;
     private School school;
 
+    // ★ 追加：点数（TestRegist 用）
+    private Integer point;  // null も扱えるように Integer にする
+
     public String getNo() {
         return no;
     }
@@ -52,7 +55,7 @@ public class Student implements Serializable {
         this.isAttend = isAttend;
     }
 
-    // ★ JSP の EL 式で ${student.attend} を使えるようにする
+    // JSP の EL 式で ${student.attend} を使えるようにする
     public boolean getAttend() {
         return isAttend;
     }
@@ -63,6 +66,15 @@ public class Student implements Serializable {
 
     public void setSchool(School school) {
         this.school = school;
+    }
+
+    // ★ 追加：点数 getter/setter
+    public Integer getPoint() {
+        return point;
+    }
+
+    public void setPoint(Integer point) {
+        this.point = point;
     }
 
     /**
@@ -79,4 +91,3 @@ public class Student implements Serializable {
         return year - this.entYear + 1;
     }
 }
-

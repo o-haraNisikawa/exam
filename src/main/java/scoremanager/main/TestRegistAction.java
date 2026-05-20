@@ -19,14 +19,12 @@ public class TestRegistAction extends Action {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
 
-        // ▼ ログインチェック
         Teacher teacher = Util.getUser(req);
         if (teacher == null) {
             res.sendRedirect("../Login.action");
             return;
         }
 
-        // ▼ パラメータ取得
         String entYearStr = req.getParameter("f1");
         String classNum = req.getParameter("f2");
         String subjectCd = req.getParameter("f3");
@@ -42,14 +40,10 @@ public class TestRegistAction extends Action {
         // ▼ 保存処理
         if ("save".equals(btn)) {
 
-            // POST 時に f1〜f4 を再取得
-            entYearStr = req.getParameter("f1");
-            classNum   = req.getParameter("f2");
-            subjectCd  = req.getParameter("f3");
-            noStr      = req.getParameter("f4");
-
-            entYear = Integer.parseInt(entYearStr);
-            no      = Integer.parseInt(noStr);
+            entYear = Integer.parseInt(req.getParameter("f1"));
+            classNum = req.getParameter("f2");
+            subjectCd = req.getParameter("f3");
+            no = Integer.parseInt(req.getParameter("f4"));
 
             String[] studentNos = req.getParameterValues("student_no");
             String[] points = req.getParameterValues("point");
@@ -57,14 +51,27 @@ public class TestRegistAction extends Action {
             List<Test> list = new ArrayList<>();
             List<Integer> errorIndexList = new ArrayList<>();
 
-            // ▼ 入力チェック（0～100）
             for (int i = 0; i < studentNos.length; i++) {
 
                 int p = -1;
-                try { p = Integer.parseInt(points[i]); } catch (Exception e) {}
 
-                if (p < 0 || p > 100) {
+                if (points == null || i >= points.length) {
                     errorIndexList.add(i);
+                } else {
+                    String pointStr = points[i];
+
+                    if (pointStr == null || pointStr.trim().isEmpty()) {
+                        errorIndexList.add(i);
+                    } else {
+                        try {
+                            p = Integer.parseInt(pointStr);
+                            if (p < 0 || p > 100) {
+                                errorIndexList.add(i);
+                            }
+                        } catch (Exception e) {
+                            errorIndexList.add(i);
+                        }
+                    }
                 }
 
                 Test test = new Test();
@@ -86,24 +93,28 @@ public class TestRegistAction extends Action {
                 list.add(test);
             }
 
-            // ▼ エラーがある場合は JSP に戻す
             if (!errorIndexList.isEmpty()) {
 
+                StudentDao sDao = new StudentDao();
+                List<Student> studentListForJsp = new ArrayList<>();
+
+                for (Test t : list) {
+                    Student st = sDao.get(t.getStudent().getNo());
+                    st.setPoint(t.getPoint());
+                    studentListForJsp.add(st);
+                }
+
                 req.setAttribute("errorIndexList", errorIndexList);
-                req.setAttribute("student_list", list); // 入力値保持のため
+                req.setAttribute("student_list", studentListForJsp);
 
-                // ▼ 科目名セット（検索結果表示用）
                 Util.setSubjects(req);
-                String subjectName = Util.getSubjectName(req, subjectCd);
-                req.setAttribute("subject_name", subjectName);
+                req.setAttribute("subject_name", Util.getSubjectName(req, subjectCd));
 
-                // ▼ プルダウンセット
                 Util.setEntYearSet(req);
                 Util.setClassNumSet(req);
                 Util.setSubjects(req);
                 Util.setNumSet(req);
 
-                // ▼ 検索条件保持
                 req.setAttribute("f1", entYear);
                 req.setAttribute("f2", classNum);
                 req.setAttribute("f3", subjectCd);
@@ -114,7 +125,6 @@ public class TestRegistAction extends Action {
                 return;
             }
 
-            // ▼ 正常保存
             TestDao tDao = new TestDao();
             tDao.save(list);
 
@@ -122,25 +132,24 @@ public class TestRegistAction extends Action {
             return;
         }
 
-        // ▼ 検索処理（学生一覧）
+        // ▼ 検索処理
         if (entYear > 0 && !classNum.equals("0") && !subjectCd.equals("0") && no > 0) {
 
             StudentDao sDao = new StudentDao();
+            TestDao tDao = new TestDao();
+
             List<Student> students =
                 sDao.filterAll(teacher.getSchool(), entYear, classNum);
 
-            // ★ 学生情報が存在しない場合のエラー
             if (students == null || students.isEmpty()) {
 
                 req.setAttribute("error_student_notfound", true);
 
-                // ▼ プルダウンセット
                 Util.setEntYearSet(req);
                 Util.setClassNumSet(req);
                 Util.setSubjects(req);
                 Util.setNumSet(req);
 
-                // ▼ 検索条件保持
                 req.setAttribute("f1", entYear);
                 req.setAttribute("f2", classNum);
                 req.setAttribute("f3", subjectCd);
@@ -151,21 +160,25 @@ public class TestRegistAction extends Action {
                 return;
             }
 
+            // ★ 既存点数を取得して Student にセット
+            for (Student st : students) {
+                Test test = tDao.get(st.getNo(), subjectCd, teacher.getSchool(), no);
+                if (test != null) {
+                    st.setPoint(test.getPoint());
+                }
+            }
+
             req.setAttribute("student_list", students);
 
-            // ▼ 科目名セット（検索結果表示用）
             Util.setSubjects(req);
-            String subjectName = Util.getSubjectName(req, subjectCd);
-            req.setAttribute("subject_name", subjectName);
+            req.setAttribute("subject_name", Util.getSubjectName(req, subjectCd));
         }
 
-        // ▼ プルダウンセット
         Util.setEntYearSet(req);
         Util.setClassNumSet(req);
         Util.setSubjects(req);
         Util.setNumSet(req);
 
-        // ▼ 検索条件保持
         req.setAttribute("f1", entYear);
         req.setAttribute("f2", classNum);
         req.setAttribute("f3", subjectCd);

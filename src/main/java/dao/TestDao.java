@@ -13,7 +13,7 @@ import bean.Test;
 
 public class TestDao extends Dao {
 
-    // ▼ 1件取得
+    // ▼ 1件取得（Student / Subject を渡す従来版）
     public Test get(Student student, Subject subject, School school, int no) throws Exception {
         Test test = new Test();
         Connection connection = getConnection();
@@ -44,6 +44,36 @@ public class TestDao extends Dao {
         } finally {
             if (statement != null) statement.close();
             if (connection != null) connection.close();
+        }
+
+        return test;
+    }
+
+    // ★★★ 追加：簡易 get（TestRegistAction から使う用）★★★
+    public Test get(String studentNo, String subjectCd, School school, int no) throws Exception {
+
+        Test test = null;
+
+        String sql =
+            "select point " +
+            "from test " +
+            "where student_no=? and subject_cd=? and school_cd=? and no=?";
+
+        try (
+            Connection con = getConnection();
+            PreparedStatement ps = con.prepareStatement(sql)
+        ) {
+            ps.setString(1, studentNo);
+            ps.setString(2, subjectCd);
+            ps.setString(3, school.getCd());
+            ps.setInt(4, no);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                test = new Test();
+                test.setPoint(rs.getInt("point"));
+            }
         }
 
         return test;

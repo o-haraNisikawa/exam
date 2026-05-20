@@ -40,17 +40,16 @@ public class TestListAction extends Action {
         // ▼ 科目別（btn=31）
         if ("31".equals(btn)) {
 
-            // ▼ 条件不足チェック
+            req.setAttribute("btn", "31"); // ★ JSP に渡す
+
             if (entYear == 0 || "0".equals(classNum) || "0".equals(subjectCd)) {
 
                 req.setAttribute("error_subject", true);
 
-                // ▼ プルダウンセット
                 Util.setEntYearSet(req);
                 Util.setClassNumSet(req);
                 Util.setSubjects(req);
 
-                // ▼ 入力保持
                 req.setAttribute("f1", entYear);
                 req.setAttribute("f2", classNum);
                 req.setAttribute("f3", subjectCd);
@@ -61,7 +60,6 @@ public class TestListAction extends Action {
                 return;
             }
 
-            // ▼ 条件が揃っている場合は検索実行
             Subject subject = new Subject();
             subject.setCd(subjectCd);
 
@@ -71,21 +69,15 @@ public class TestListAction extends Action {
 
             req.setAttribute("list", list);
 
-            // ▼ 検索フォームの値を渡す
             req.setAttribute("f1", entYear);
             req.setAttribute("f2", classNum);
             req.setAttribute("f3", subjectCd);
             req.setAttribute("student_no", studentNo);
 
-            // 科目名取得
             Util.setSubjects(req);
-            String subjectName = Util.getSubjectName(req, subjectCd);
-            req.setAttribute("subject_name", subjectName);
-
-            // 回数セット
+            req.setAttribute("subject_name", Util.getSubjectName(req, subjectCd));
             Util.setNumSet(req);
 
-            // ▼ プルダウンセット
             Util.setEntYearSet(req);
             Util.setClassNumSet(req);
             Util.setSubjects(req);
@@ -98,28 +90,8 @@ public class TestListAction extends Action {
         // ▼ 学生別（btn=32）
         if ("32".equals(btn)) {
 
-            // ▼ 学生番号未入力エラー
-            if (studentNo == null || studentNo.isEmpty()) {
+            req.setAttribute("btn", "32"); // ★ JSP に渡す
 
-                req.setAttribute("error_student_no", true);
-
-                // ▼ プルダウンセット
-                Util.setEntYearSet(req);
-                Util.setClassNumSet(req);
-                Util.setSubjects(req);
-
-                // ▼ 入力保持
-                req.setAttribute("f1", entYear);
-                req.setAttribute("f2", classNum);
-                req.setAttribute("f3", subjectCd);
-                req.setAttribute("student_no", studentNo);
-
-                req.getRequestDispatcher("/scoremanager/main/test_list.jsp")
-                   .forward(req, res);
-                return;
-            }
-
-            // ▼ 学生番号が入力されている場合は検索実行
             StudentDao sDao = new StudentDao();
             Student st = sDao.get(studentNo);
 
@@ -138,13 +110,11 @@ public class TestListAction extends Action {
 
             req.setAttribute("list", list);
 
-            // ▼ 検索フォームの値を渡す
             req.setAttribute("f1", entYear);
             req.setAttribute("f2", classNum);
             req.setAttribute("f3", subjectCd);
             req.setAttribute("student_no", studentNo);
 
-            // ▼ プルダウンセット
             Util.setEntYearSet(req);
             Util.setClassNumSet(req);
             Util.setSubjects(req);
@@ -154,7 +124,9 @@ public class TestListAction extends Action {
             return;
         }
 
-        // ▼ 初期表示（検索画面）
+        // ▼ 初期表示
+        req.setAttribute("btn", null);
+
         Util.setEntYearSet(req);
         Util.setClassNumSet(req);
         Util.setSubjects(req);
