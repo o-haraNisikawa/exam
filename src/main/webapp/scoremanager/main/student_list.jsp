@@ -84,6 +84,7 @@
 									</c:choose>
 									</td>
 									<td><a href="StudentUpdate.action?no=${student.no}">変更</a></td>
+			                   		<td><a href="StudentDelete.action?no=${student.no}">削除</a></td>
 						</c:forEach>
 					</table>
 				</c:when>

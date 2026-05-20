@@ -227,7 +227,7 @@ public class StudentDao extends Dao {
         }
     }
 
-    // ▼ 削除
+    /// ▼ 削除
     public boolean delete(String no, String school_cd) throws Exception {
 
         Connection connection = getConnection();
@@ -248,8 +248,6 @@ public class StudentDao extends Dao {
             statement.setString(1, no);
             statement.setString(2, school_cd);
             count += statement.executeUpdate();
-
-            connection.commit();
 
         } finally {
             connection.setAutoCommit(true);
