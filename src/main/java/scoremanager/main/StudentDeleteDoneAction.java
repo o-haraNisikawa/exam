@@ -1,6 +1,5 @@
 package scoremanager.main;
 
-import bean.Student;
 import bean.Teacher;
 import dao.StudentDao;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,30 +13,17 @@ public class StudentDeleteDoneAction extends Action {
     public void execute(HttpServletRequest req, HttpServletResponse res)
             throws Exception {
 
-        HttpSession session = req.getSession();
+    	HttpSession session = req.getSession();
+    	Teacher teacher = (Teacher)session.getAttribute("user");
 
-        Teacher teacher = (Teacher) session.getAttribute("user");
+    	String no = req.getParameter("no");
 
-        // セッション切れ対策
-        if (teacher == null) {
-            res.sendRedirect("login.jsp");
-            return;
-        }
+    	// school_cdは教師から取得
+    	String sc_cd = teacher.getSchool().getCd();
 
-        // パラメータ取得
-        String no = req.getParameter("no");
-        String sc_cd = req.getParameter("school_cd");
-
-        // 科目オブジェクト作成
-        Student student = new Student();
-
-		student.setNo(no);
-        student.setName(sc_cd);
-
-        StudentDao sDao = new StudentDao();
-        
-        // 削除
-        sDao.delete(no,sc_cd);
+    	StudentDao sDao = new StudentDao();
+    	sDao.delete(no, sc_cd);
+    	
         // JSPにフォワード
         req.getRequestDispatcher("student_delete_done.jsp").forward(req, res);
     }

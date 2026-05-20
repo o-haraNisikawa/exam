@@ -228,30 +228,41 @@ public class StudentDao extends Dao {
     }
 
     /// ▼ 削除
-    public boolean delete(String no, String school_cd) throws Exception {
+    public boolean delete(String no, String school_cd)
+            throws Exception {
 
         Connection connection = getConnection();
         PreparedStatement statement = null;
         int count = 0;
 
         try {
-            statement = connection.prepareStatement(
-                "delete from student where no = ? and school_cd = ?"
-            );
-            statement.setString(1, no);
-            statement.setString(2, school_cd);
-            count += statement.executeUpdate();
+
+            connection.setAutoCommit(false);
+
+            statement = connection.prepareStatement("delete from test where student_no=? and school_cd=?");
+            statement.setString(1,no);
+            statement.setString(2,school_cd);
+            statement.executeUpdate();
 
             statement = connection.prepareStatement(
-                "delete from test where student_no = ? and school_cd = ?"
+                "delete from student where no=? and school_cd=?"
             );
-            statement.setString(1, no);
-            statement.setString(2, school_cd);
-            count += statement.executeUpdate();
+            statement.setString(1,no);
+            statement.setString(2,school_cd);
+
+            count = statement.executeUpdate();
+
+            connection.commit();
+
+        } catch(Exception e) {
+
+            connection.rollback();
+            throw e;
 
         } finally {
-            connection.setAutoCommit(true);
+
             connection.close();
+
         }
 
         return count > 0;
