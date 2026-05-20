@@ -9,7 +9,7 @@ public class Test implements Serializable {
     private School school;
 
     private String classNum;
-    private int no;        // ★ DAO は num ではなく no
+    private int no;        
     private int point;
 
     public Student getStudent() { return student; }

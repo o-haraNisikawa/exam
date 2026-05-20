@@ -129,6 +129,28 @@ public class TestRegistAction extends Action {
             List<Student> students =
                 sDao.filterAll(teacher.getSchool(), entYear, classNum);
 
+            // ★ 学生情報が存在しない場合のエラー
+            if (students == null || students.isEmpty()) {
+
+                req.setAttribute("error_student_notfound", true);
+
+                // ▼ プルダウンセット
+                Util.setEntYearSet(req);
+                Util.setClassNumSet(req);
+                Util.setSubjects(req);
+                Util.setNumSet(req);
+
+                // ▼ 検索条件保持
+                req.setAttribute("f1", entYear);
+                req.setAttribute("f2", classNum);
+                req.setAttribute("f3", subjectCd);
+                req.setAttribute("f4", no);
+
+                req.getRequestDispatcher("/scoremanager/main/test_regist.jsp")
+                   .forward(req, res);
+                return;
+            }
+
             req.setAttribute("student_list", students);
 
             // ▼ 科目名セット（検索結果表示用）

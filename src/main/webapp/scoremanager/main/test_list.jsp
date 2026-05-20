@@ -94,14 +94,16 @@
 					           name="student_no"
 					           value="${student_no}"
 					           placeholder="学生番号を入力してください">
-					
-					    <!-- ▼ 学生番号未入力エラー（黄色文字） -->
-					    <c:if test="${error_student_no}">
-					        <div class="text-warning mt-1" style="font-size: 0.9rem;">
-					            このフィールドを入力してください。
-					        </div>
-					    </c:if>
+				
+				            
+				            <!-- ▼ 条件不足エラー（黄色文字） -->
+						    <c:if test="${error_student_no}">
+						        <div class="text-warning mt-1" style="font-size: 0.9rem;">
+						            このフィールドを入力してください
+						        </div>
+						    </c:if>
 					</div>
+					
                    
 
                    <!-- 学生別検索ボタン -->

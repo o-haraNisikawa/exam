@@ -78,22 +78,25 @@
                 </div>
             </form>
 
+            <!-- ▼ 学生情報なしエラー -->
+            <c:if test="${error_student_notfound}">
+                <div class="text-warning mt-2 ms-4" style="font-size: 0.9rem;">
+                    学生情報が存在しません。
+                </div>
+            </c:if>
+
             <!-- ▼ 検索結果（学生一覧） ▼ -->
-			<c:if test="${not empty student_list}">
-			    <!-- ▼ 科目名と回数の表示 -->
-			    <div class="px-4 mb-2 fw-bold">科目：${subject_name}（${f4}回目）</div>
-			
-			    
-            
+            <c:if test="${not empty student_list}">
+                <!-- ▼ 科目名と回数の表示 -->
+                <div class="px-4 mb-2 fw-bold">科目：${subject_name}（${f4}回目）</div>
 
                 <form method="post" action="/exam/scoremanager/main/TestRegist.action">
 
-					    <input type="hidden" name="f1" value="${f1}">
-					    <input type="hidden" name="f2" value="${f2}">
-					    <input type="hidden" name="f3" value="${f3}">
-					    <input type="hidden" name="f4" value="${f4}">
-					    <input type="hidden" name="btn" value="save">
-                
+                    <input type="hidden" name="f1" value="${f1}">
+                    <input type="hidden" name="f2" value="${f2}">
+                    <input type="hidden" name="f3" value="${f3}">
+                    <input type="hidden" name="f4" value="${f4}">
+                    <input type="hidden" name="btn" value="save">
 
                     <table class="table table-hover mt-3">
                         <thead>
@@ -107,31 +110,23 @@
                         </thead>
 
                         <tbody>
-                           <c:forEach var="st" items="${student_list}" varStatus="status">
-							    <tr>
-							        <td>${st.entYear}</td>
-							        <td>${st.classNum}</td>
-							        <td>${st.no}</td>
-							        <td>${st.name}</td>
-							
-							        <td>
-							            <input type="hidden" name="student_no" value="${st.no}">
-							            <input type="number"
-							                   class="form-control"
-							                   name="point"
-							                   min="0" max="100"
-							                   placeholder="0～100">
-							
-							            <!-- エラー表示 -->
-							            <c:if test="${not empty errorIndexList && errorIndexList.contains(status.index)}">
-							                <div class="text-warning" style="font-size: 0.85rem;">
-							                    0～100の範囲で入力してください
-							                </div>
-							            </c:if>
-							        </td>
-							    </tr>
-							</c:forEach>
-                           
+                            <c:forEach var="st" items="${student_list}" varStatus="status">
+                                <tr>
+                                    <td>${st.entYear}</td>
+                                    <td>${st.classNum}</td>
+                                    <td>${st.no}</td>
+                                    <td>${st.name}</td>
+
+                                    <td>
+                                        <input type="hidden" name="student_no" value="${st.no}">
+                                        <input type="number"
+                                               class="form-control"
+                                               name="point"
+                                               min="0" max="100"
+                                               placeholder="0～100">
+                                    </td>
+                                </tr>
+                            </c:forEach>
                         </tbody>
                     </table>
 
