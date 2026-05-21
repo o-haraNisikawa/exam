@@ -145,9 +145,7 @@
                 </c:otherwise>
             </c:choose>
 
-            <div class="mx-3 mt-4">
-                <a href="/exam/scoremanager/main/TestList.action" class="btn btn-outline-secondary">戻る</a>
-            </div>
+            
 
         </section>
 
