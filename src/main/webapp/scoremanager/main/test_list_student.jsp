@@ -14,11 +14,10 @@
                 成績一覧（学生）
             </h2>
 
-            <!-- ▼ 成績参照検索フォーム（test_list.jsp と同じ） -->
+            <!-- ▼ 科目検索フォーム -->
             <form method="get" action="/exam/scoremanager/main/TestList.action">
                 <div class="row border mx-3 mb-3 py-3 rounded">
 
-                    <!-- 科目情報 -->
                     <div class="col-12 mb-3">
                         <h5 class="fw-bold">科目情報</h5>
                     </div>
@@ -69,26 +68,29 @@
                         </button>
                     </div>
 
-                    <!-- 区切り線 -->
-                    <div class="col-12 mt-4 mb-3 border-top"></div>
+                </div>
+            </form>
 
+            <!-- ▼ 学生検索フォーム -->
+            <form method="get" action="/exam/scoremanager/main/TestList.action">
+                <div class="row border mx-3 mb-3 py-3 rounded">
 
-                    <!-- 学生情報 -->
                     <div class="col-12 mb-2">
                         <h5 class="fw-bold">学生情報</h5>
                     </div>
 
-                   <!-- 学生番号 -->
-					<div class="col-4">
-					    <label class="form-label">学生番号</label>
-					    <input type="text"
-					           class="form-control"
-					           name="student_no"
-					           value="${student_no}"
-					           placeholder="学生番号を入力してください"
-					           <c:if test="${param.btn == '32'}">required</c:if>>
-					</div>
-                   
+                    <!-- 学生番号 -->
+                    <div class="col-4">
+                        <label class="form-label">学生番号</label>
+                      	<input type="text"
+							       class="form-control"
+							       name="student_no"
+							       value="${student_no}"
+							       placeholder="学生番号を入力してください"
+							       required>
+                      
+                        
+                    </div>
 
                     <!-- 学生別検索ボタン -->
                     <div class="col-3 mt-4 text-center">
@@ -96,6 +98,13 @@
                             検索
                         </button>
                     </div>
+
+                    <!-- 学生番号エラー -->
+                    <c:if test="${error_student}">
+                        <div class="text-warning mt-2" style="font-size: 0.9rem;">
+                            学生番号を入力してください
+                        </div>
+                    </c:if>
 
                 </div>
             </form>
@@ -139,8 +148,7 @@
 
                 <c:otherwise>
                 
-                	<!-- 氏名表示（成績がないときも表示する） -->
-        			<div class="mx-3 mb-2 fw-bold">氏名：${student_name}（${student_no}）</div>
+                    <div class="mx-3 mb-2 fw-bold">氏名：${student_name}（${student_no}）</div>
                 
                     <div class="mx-3 text-danger">
                         成績情報が存在しませんでした。
@@ -148,9 +156,8 @@
                 </c:otherwise>
             </c:choose>
 
-            
-
         </section>
 
     </c:param>
 </c:import>
+

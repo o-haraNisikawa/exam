@@ -37,11 +37,14 @@ public class TestListAction extends Action {
             entYear = Integer.parseInt(entYearStr);
         }
 
-        // ▼ 科目別（btn=31）
+        /* ============================================================
+         * ▼ 科目別検索（btn=31）
+         * ============================================================ */
         if ("31".equals(btn)) {
 
-            req.setAttribute("btn", "31"); // ★ JSP に渡す
+            req.setAttribute("btn", "31");
 
+            // 入力チェック（科目検索）
             if (entYear == 0 || "0".equals(classNum) || "0".equals(subjectCd)) {
 
                 req.setAttribute("error_subject", true);
@@ -87,10 +90,31 @@ public class TestListAction extends Action {
             return;
         }
 
-        // ▼ 学生別（btn=32）
+        /* ============================================================
+         * ▼ 学生別検索（btn=32）
+         * ============================================================ */
         if ("32".equals(btn)) {
 
-            req.setAttribute("btn", "32"); // ★ JSP に渡す
+            req.setAttribute("btn", "32");
+
+            // ★ required を削除したので、空欄チェックを Action 側で行う
+            if (studentNo == null || studentNo.isEmpty()) {
+
+                req.setAttribute("error_student", true);
+
+                Util.setEntYearSet(req);
+                Util.setClassNumSet(req);
+                Util.setSubjects(req);
+
+                req.setAttribute("f1", entYear);
+                req.setAttribute("f2", classNum);
+                req.setAttribute("f3", subjectCd);
+                req.setAttribute("student_no", studentNo);
+
+                req.getRequestDispatcher("/scoremanager/main/test_list.jsp")
+                   .forward(req, res);
+                return;
+            }
 
             StudentDao sDao = new StudentDao();
             Student st = sDao.get(studentNo);
@@ -124,7 +148,9 @@ public class TestListAction extends Action {
             return;
         }
 
-        // ▼ 初期表示
+        /* ============================================================
+         * ▼ 初期表示
+         * ============================================================ */
         req.setAttribute("btn", null);
 
         Util.setEntYearSet(req);

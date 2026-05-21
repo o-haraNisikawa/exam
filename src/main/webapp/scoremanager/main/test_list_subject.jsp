@@ -14,11 +14,10 @@
                 成績一覧（科目）
             </h2>
 
-            <!-- ▼ 成績参照検索フォーム（test_list.jsp と同じ） -->
+            <!-- ▼ 科目検索フォーム -->
             <form method="get" action="/exam/scoremanager/main/TestList.action">
                 <div class="row border mx-3 mb-3 py-3 rounded">
 
-                    <!-- 科目情報 -->
                     <div class="col-12 mb-3">
                         <h5 class="fw-bold">科目情報</h5>
                     </div>
@@ -69,12 +68,13 @@
                         </button>
                     </div>
 
-                    <!-- 区切り線 -->
-                    <div class="col-12 mt-4 mb-3 border-top"></div>
+                </div>
+            </form>
 
-                   
+            <!-- ▼ 学生検索フォーム -->
+            <form method="get" action="/exam/scoremanager/main/TestList.action">
+                <div class="row border mx-3 mb-3 py-3 rounded">
 
-                    <!-- 学生情報 -->
                     <div class="col-12 mb-2">
                         <h5 class="fw-bold">学生情報</h5>
                     </div>
@@ -96,16 +96,21 @@
                         </button>
                     </div>
 
+                    <!-- 学生番号エラー -->
+                    <c:if test="${error_student}">
+                        <div class="text-warning mt-2" style="font-size: 0.9rem;">
+                            学生番号を入力してください
+                        </div>
+                    </c:if>
+
                 </div>
             </form>
 
-            <!-- ▼ 成績一覧（ここから下は元のまま） -->
+            <!-- ▼ 成績一覧 -->
             <c:choose>
                 <c:when test="${not empty list}">
 
                     <div class="mx-4 mb-3 fw-bold">科目：${subject_name}</div>
-                   
-                    
 
                     <table class="table table-hover mx-3">
                         <thead>
@@ -141,9 +146,9 @@
                 </c:when>
 
                 <c:otherwise>
-                
-                	<div class="mx-4 mb-3 fw-bold">科目：${subject_name}</div>
-                
+
+                    <div class="mx-4 mb-3 fw-bold">科目：${subject_name}</div>
+
                     <div class="mx-3 text-danger">
                         成績情報が存在しませんでした。
                     </div>

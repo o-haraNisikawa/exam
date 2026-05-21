@@ -2,15 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="jakarta.tags.core"%>
 
-<script>
-    function enableRequired() {
-        document.querySelector("input[name='student_no']").setAttribute("required", "required");
-    }
-    function disableRequired() {
-        document.querySelector("input[name='student_no']").removeAttribute("required");
-    }
-</script>
-
 <c:import url="/common/base.jsp">
     <c:param name="title">得点管理システム</c:param>
     <c:param name="scripts"></c:param>
@@ -23,6 +14,7 @@
                 成績参照
             </h2>
 
+            <!-- ▼ 科目検索フォーム -->
             <form method="get" action="/exam/scoremanager/main/TestList.action">
                 <div class="row border mx-3 mb-3 py-3 rounded">
 
@@ -41,13 +33,14 @@
                                 </option>
                             </c:forEach>
                         </select>
-
-                        <c:if test="${error_subject and btn == '31'}">
-                            <div class="text-warning mt-1" style="font-size: 0.9rem; white-space: nowrap;">
-                                入学年度とクラスと科目を選択してください
-                            </div>
-                        </c:if>
-                    </div>
+								<c:if test="${error_subject and btn == '31'}">
+								    <span class="text-warning ms-2 d-inline-block" 
+								          style="font-size: 0.9rem; white-space: nowrap;">
+								        入学年度とクラスと科目を選択してください
+								    </span>
+								</c:if>
+								
+	                    </div>
 
                     <!-- クラス -->
                     <div class="col-2">
@@ -75,17 +68,21 @@
                         </select>
                     </div>
 
-                    <!-- 科目検索 -->
+                    <!-- 科目検索ボタン -->
                     <div class="col-3 mt-4 text-center">
                         <button class="btn btn-secondary w-75"
                                 name="btn"
-                                value="31"
-                                onclick="disableRequired()">
+                                value="31">
                             検索
                         </button>
                     </div>
 
-                    <div class="col-12 mt-4 mb-3 border-top"></div>
+                </div>
+            </form>
+
+            <!-- ▼ 学生検索フォーム -->
+            <form method="get" action="/exam/scoremanager/main/TestList.action">
+                <div class="row border mx-3 mb-3 py-3 rounded">
 
                     <div class="col-12 mb-2">
                         <h5 class="fw-bold">学生情報</h5>
@@ -94,23 +91,30 @@
                     <!-- 学生番号 -->
                     <div class="col-4">
                         <label class="form-label">学生番号</label>
-                        <input type="text"
-                               class="form-control"
-                               name="student_no"
-                               value="${student_no}"
-                               placeholder="学生番号を入力してください"
-                               <c:if test="${btn == '32'}">required</c:if>>
+                      	<input type="text"
+						       class="form-control"
+						       name="student_no"
+						       value="${student_no}"
+						       placeholder="学生番号を入力してください"
+						       required>
+                      	
+                      	
                     </div>
 
-                    <!-- 学生検索 -->
+                    <!-- 学生検索ボタン -->
                     <div class="col-3 mt-4 text-center">
                         <button class="btn btn-secondary w-75"
                                 name="btn"
-                                value="32"
-                                onclick="enableRequired()">
+                                value="32">
                             検索
                         </button>
                     </div>
+
+                    <c:if test="${error_student}">
+                        <div class="text-warning mt-2" style="font-size: 0.9rem;">
+                            学生番号を入力してください
+                        </div>
+                    </c:if>
 
                 </div>
             </form>
