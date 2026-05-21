@@ -106,7 +106,6 @@
                 
                     <div class="mx-3 mb-2 fw-bold">氏名：${student_name}（${student_no}）</div>
                     
-
                     <table class="table table-hover mx-3">
                         <thead>
                             <tr>
@@ -139,6 +138,10 @@
                 </c:when>
 
                 <c:otherwise>
+                
+                	<!-- 氏名表示（成績がないときも表示する） -->
+        			<div class="mx-3 mb-2 fw-bold">氏名：${student_name}（${student_no}）</div>
+                
                     <div class="mx-3 text-danger">
                         成績情報が存在しませんでした。
                     </div>

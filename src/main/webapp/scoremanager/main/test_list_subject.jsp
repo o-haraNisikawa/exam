@@ -104,6 +104,7 @@
                 <c:when test="${not empty list}">
 
                     <div class="mx-4 mb-3 fw-bold">科目：${subject_name}</div>
+                   
                     
 
                     <table class="table table-hover mx-3">
@@ -140,6 +141,9 @@
                 </c:when>
 
                 <c:otherwise>
+                
+                	<div class="mx-4 mb-3 fw-bold">科目：${subject_name}</div>
+                
                     <div class="mx-3 text-danger">
                         成績情報が存在しませんでした。
                     </div>
